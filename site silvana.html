@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Presentes - Chá de Panela</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f7f7f7; }
+        h1 { text-align: center; }
+        h2 { margin-top: 20px; }
+        ul { list-style-type: none; padding: 0; }
+        li { background: #fff; margin: 10px; padding: 10px; border: 1px solid #ccc; cursor: pointer; }
+        li.hidden { display: none; }
+        .form-container { text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Lista de Presentes - Chá de Panela</h1>
+
+    <div class="form-container">
+        <input type="text" id="guestName" placeholder="Nome do Convidado" />
+        <button onclick="registerGift()">Escolher Presente</button>
+    </div>
+
+    <h2>Ítens de Cozinha</h2>
+    <ul id="kitchenList">
+        <li onclick="chooseGift(this)">Air fryer</li>
+        <li onclick="chooseGift(this)">Sanduícheira (Preta)</li>
+        <li onclick="chooseGift(this)">Panela de pressão</li>
+        <li onclick="chooseGift(this)">Jogo de Panelas</li>
+        <li onclick="chooseGift(this)">Frigideira antiaderente</li>
+        <li onclick="chooseGift(this)">Jogo de Pratos fundos (branco)</li>
+        <li onclick="chooseGift(this)">Jogo de Pratos rasos (branco)</li>
+        <li onclick="chooseGift(this)">Jogo de Pratos de sobremesa (branco)</li>
+        <li onclick="chooseGift(this)">Jogo de Copos</li>
+        <li onclick="chooseGift(this)">Jogo de xícaras</li>
+        <li onclick="chooseGift(this)">Jogo de talheres (inóx ou preto)</li>
+        <li onclick="chooseGift(this)">Kit de travessas de vidro</li>
+        <li onclick="chooseGift(this)">Kit de potes de vidro</li>
+        <li onclick="chooseGift(this)">Kit de potes de plásticos (branco, transparente ou preto)</li>
+        <li onclick="chooseGift(this)">Jarra para Suco (Transparente, branca ou preta)</li>
+        <li onclick="chooseGift(this)">Recipiente para água</li>
+        <li onclick="chooseGift(this)">Toalha de mesa (quadrada e pequena)</li>
+        <li onclick="chooseGift(this)">Puxa saco</li>
+        <li onclick="chooseGift(this)">Fruteira</li>
+    </ul>
+
+    <h2>Ítens para Quarto</h2>
+    <ul id="bedroomList">
+        <li onclick="chooseGift(this)">Jogo de Lençol queen</li>
+        <li onclick="chooseGift(this)">Manta queen</li>
+        <li onclick="chooseGift(this)">Cobre leito queen</li>
+        <li onclick="chooseGift(this)">Colcha queen</li>
+        <li onclick="chooseGift(this)">2 travesseiros</li>
+        <li onclick="chooseGift(this)">Tapete</li>
+        <li onclick="chooseGift(this)">Ventilador</li>
+    </ul>
+
+    <h2>Ítens para Lavanderia</h2>
+    <ul id="laundryList">
+        <li onclick="chooseGift(this)">Ferro de passar roupa</li>
+        <li onclick="chooseGift(this)">Capa flanelada para máquina de lavar (tam. G)</li>
+        <li onclick="chooseGift(this)">Varal de chão</li>
+        <li onclick="chooseGift(this)">Cesto de roupas</li>
+        <li onclick="chooseGift(this)">Mop</li>
+        <li onclick="chooseGift(this)">Aspirador de pó</li>
+        <li onclick="chooseGift(this)">Kit de cabides</li>
+    </ul>
+
+    <h2>Ítens para Banheiro</h2>
+    <ul id="bathroomList">
+        <li onclick="chooseGift(this)">Kit de porta escova e sabonetes (branco ou preto)</li>
+        <li onclick="chooseGift(this)">Kit de toalhas de banho</li>
+        <li onclick="chooseGift(this)">Toalha de rosto</li>
+        <li onclick="chooseGift(this)">Tapete de box antiderrapante</li>
+        <li onclick="chooseGift(this)">Jogo de tapete para banheiro</li>
+    </ul>
+
+    <script>
+        function chooseGift(item) {
+            const guestName = document.getElementById('guestName').value.trim();
+            if (!guestName) {
+                alert('Por favor, insira o nome do convidado.');
+                return;
+            }
+            item.classList.add('hidden');
+            const giftName = item.textContent;
+
+            // Registro do presente escolhido
+            let chosenGifts = JSON.parse(localStorage.getItem('chosenGifts')) || {};
+            if (!chosenGifts[guestName]) {
+                chosenGifts[guestName] = [];
+            }
+            if (!chosenGifts[guestName].includes(giftName)) {
+                chosenGifts[guestName].push(giftName);
+                localStorage.setItem('chosenGifts', JSON.stringify(chosenGifts));
+            } else {
+                alert('Esse presente já foi escolhido por você.');
+            }
+        }
+
+        function registerGift() {
+            const guestName = document.getElementById('guestName').value.trim();
+            if (!guestName) {
+                alert('Por favor, insira o nome do convidado.');
+            } else {
+                alert('Você pode escolher um presente clicando na lista.');
+            }
+        }
+
+        window.onload = function() {
+            const chosenGifts = JSON.parse(localStorage.getItem('chosenGifts')) || {};
+            const items = document.querySelectorAll('li');
+
+            items.forEach(item => {
+                for (const guest in chosenGifts) {
+                    if (chosenGifts[guest].includes(item.textContent)) {
+                        item.classList.add('hidden');
+                    }
+                }
+            });
+        };
+    </script>
+</body>
+</html>
